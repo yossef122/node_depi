@@ -1,0 +1,38 @@
+---
+- name: task-node
+  hosts: vms
+  remote_user: helmy
+  become: true
+ # ansible_facts: true
+  
+  tasks:
+    - name: update the packages
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: copy the project from local to remote_user
+      ansible.builtin.copy:
+        src: /home/helmy/depi/ansible/first_task/node_depi
+        dest: /home/helmy/depi
+  
+    - name: Install node js
+      ansible.builtin.apt:
+        name: nodejs
+        state: present
+  
+    - name: Install npm
+      ansible.builtin.apt:
+        name: npm
+        state: present
+
+    - name: Install dependencies and packages
+      ansible.builtin.command:
+        chdir: /home/helmy/depi/
+        cmd: npm  install
+  
+    - name: Install dependencies and packages
+      ansible.builtin.command:
+        chdir: /home/helmy/depi/
+        cmd: npm start
+
+
